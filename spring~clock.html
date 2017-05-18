@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>html5 canvas 时钟动画</title>
+
+<style type="text/css">
+	#myCanvas{
+		display: block;
+		margin:10px auto;
+	}
+</style>
+
+</head>
+<body>
+<canvas id="myCanvas" width="400" height="400"></canvas>
+<script type="text/javascript">
+
+	var myCanvas = document.getElementById('myCanvas');
+	var c = myCanvas.getContext('2d');  //
+
+	function clock(){
+		c.clearRect(0,0,400,400);
+		var data = new Date();   //获取时间
+		var sec=data.getSeconds();  //获取秒钟
+		var min=data.getMinutes();  //获取分钟
+		var hour=data.getHours();   //获取小时
+
+		c.save();
+		c.translate(200,200);  //
+		c.rotate(-Math.PI/2);  //
+
+		
+
+		//分钟刻度线
+		for (var i = 0; i < 60; i++) {
+			c.beginPath();
+			c.strokeStyle = "yellowgreen";  //分针样式
+			c.lineWidth = 3;       //分针刻度宽度
+			c.moveTo(117,0);       //分针刻度的位置
+			c.lineTo(90,0);        // 表盘中分钟刻度的长度
+			c.stroke();
+			c.rotate(Math.PI/30);   
+			c.closePath();
+		}
+
+		//时钟刻度线
+		for(var i=0;i<12;i++){
+			c.beginPath();
+			c.strokeStyle="#000";
+			c.lineWidth=6;  //画时钟刻度线的宽度
+			c.moveTo(100,0);
+			c.lineTo(120,0);
+			c.stroke();
+			c.rotate(Math.PI/6);
+			c.closePath();
+		}
+        //外表盘
+		c.beginPath();
+	    c.strokeStyle = "lightblue"; //外表盘样式
+        c.arc(0,0,145,0,Math.PI*2);  //固定位置画圆
+	    c.lineWidth = 12;
+	    c.stroke();
+	    c.closePath();
+/*
+	    c.beginPath();
+	    c.save();
+	    c.strokeStyle="red";
+	    c.lineWidth=2;
+	    c.moveTo();
+	    c.lineWidth(0,0);
+	    c.stroke();
+	    c.closePath();
+*/
+
+		//画时针
+		hour = hour>12?hour-12:hour;
+		c.beginPath();
+		c.save();
+		c.rotate(Math.PI/6*hour+Math.PI/6*min/60+Math.PI/6*sec/3600);	
+		c.strokeStyle="black";
+		c.lineWidth=4;
+		c.moveTo(-20,0);
+		c.lineTo(50,0);
+		c.stroke();
+		c.restore();
+		c.closePath();
+
+
+			//画分针
+			c.beginPath();
+			c.save();
+			c.rotate(Math.PI/30*min+Math.PI/30*sec/60);
+			c.strokeStyle="black";
+			c.lineWidth=3;
+			c.moveTo(-20,0);
+			c.lineTo(80,0);
+			c.stroke();
+			c.restore();
+			c.closePath();
+
+			//画秒针
+			c.beginPath();
+			c.save();
+			c.rotate(Math.PI/30*sec);
+			c.strokeStyle="black";
+			c.lineWidth=2;
+			c.moveTo(-20,0); /*问题*/
+			c.lineTo(120,0);
+			c.stroke();
+			c.restore();
+			c.closePath();
+
+			c.restore();
+		}
+		clock();
+		setInterval(clock,1000);
+
+
+</script>
+
+<div style ="text-align:center;clear: both;">
+<script src="/gg_bd_ad_720x90.js" type="text/javascript"></script>
+<script src="/follow.js" type="text/javascript"></script>				
+</div>
+
+</body>
+</html>
